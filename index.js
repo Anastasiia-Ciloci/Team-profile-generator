@@ -1,6 +1,9 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 const Engineer = require("./lib/Engineer");
+// const Employee = require("./lib/Employee");
+// const Intern = require("./lib/Intern");
+// const Manager = require("./lib/Manager");
 //const question = require("./src/questions");
 //const generateHtml = require("./src/generateHtml");
 
@@ -15,9 +18,6 @@ const employeeType = () => {
       choices: ["Engineer", "Manager", "Intern", "Finish building the team"],
     },
   ]);
-  /*.then((employee) => {
-      console.log("added employee type: " + employee.type);
-    });*/
 };
 
 const employeePrompt = () => {
@@ -44,7 +44,6 @@ const mainPrompt = (type) => {
   if (type === "Engineer") {
     return employeePrompt()
       .then((employee) => {
-        //console.log(employee);
         return inquirer
           .prompt([
             {
@@ -69,21 +68,75 @@ const mainPrompt = (type) => {
         );
       });
   } else if (type === "Manager") {
-    console.log("Enter a manager");
+    return employeePrompt()
+      .then((employee) => {
+        return inquirer
+          .prompt([
+            {
+              type: " input",
+              message: "What is your office number?",
+              name: "managerOfficeN",
+            },
+          ])
+          .then((answer) => {
+            employee.officeNumber = answer.github;
+            return employee;
+          });
+      })
+      .then((employee) => {
+        team.push(
+          new Engineer(
+            employee.name,
+            employee.id,
+            employee.email,
+            employee.github
+          )
+        );
+      });
+    //console.log("Enter a manager");
   } else if (type === "Intern") {
-    console.log("Enter an intern");
+    return employeePrompt()
+      .then((employee) => {
+        return inquirer
+          .prompt([
+            {
+              type: " input",
+              message: "What school did you finish ?",
+              name: "internSchool",
+            },
+          ])
+          .then((answer) => {
+            employee.internShool = answer.github;
+            return employee;
+          });
+      })
+      .then((employee) => {
+        team.push(
+          new Intern(
+            employee.name,
+            employee.id,
+            employee.email,
+            employee.github
+          )
+        );
+      });
   }
+  // console.log("Enter an intern");
+  //   } else if (type === "Finish building the team") {
+  //     process.exit();
+  //   }
 };
 
 function init() {
-  employeeType().then((employee) => {
-    mainPrompt(employee.type)
-      .then(() => {
-        console.log(team);
-      })
-      .then(init);
-  });
-  //console.log(team);
+  employeeType()
+    .then((employee) => {
+      mainPrompt(employee.type);
+    })
+    .then(() => {
+      console.log(team);
+    })
+
+    .then(init);
 }
 
 init();
