@@ -1,11 +1,10 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 const Engineer = require("./lib/Engineer");
-// const Employee = require("./lib/Employee");
-// const Intern = require("./lib/Intern");
-// const Manager = require("./lib/Manager");
-//const question = require("./src/questions");
-//const generateHtml = require("./src/generateHtml");
+const Employee = require("./lib/Employee");
+const Intern = require("./lib/Intern");
+const Manager = require("./lib/Manager");
+const generateHtml = require("./src/generateHtml");
 
 var team = [];
 
@@ -75,21 +74,21 @@ const mainPrompt = (type) => {
             {
               type: " input",
               message: "What is your office number?",
-              name: "managerOfficeN",
+              name: "officeNumber",
             },
           ])
           .then((answer) => {
-            employee.officeNumber = answer.github;
+            employee.officeNumber = answer.officeNumber;
             return employee;
           });
       })
       .then((employee) => {
         team.push(
-          new Engineer(
+          new Manager(
             employee.name,
             employee.id,
             employee.email,
-            employee.github
+            employee.officeNumber
           )
         );
       });
@@ -102,11 +101,11 @@ const mainPrompt = (type) => {
             {
               type: " input",
               message: "What school did you finish ?",
-              name: "internSchool",
+              name: "school",
             },
           ])
           .then((answer) => {
-            employee.internShool = answer.github;
+            employee.school = answer.school;
             return employee;
           });
       })
@@ -116,27 +115,22 @@ const mainPrompt = (type) => {
             employee.name,
             employee.id,
             employee.email,
-            employee.github
+            employee.school
           )
         );
       });
   }
   // console.log("Enter an intern");
-  //   } else if (type === "Finish building the team") {
-  //     process.exit();
-  //   }
+  else if (type === "Finish building the team") {
+    fs.writeFileSync("./dist/index.html", generateHtml(team));
+    process.exit();
+  }
 };
 
 function init() {
-  employeeType()
-    .then((employee) => {
-      mainPrompt(employee.type);
-    })
-    .then(() => {
-      console.log(team);
-    })
-
-    .then(init);
+  employeeType().then((employee) => {
+    mainPrompt(employee.type).then(init);
+  });
 }
 
 init();

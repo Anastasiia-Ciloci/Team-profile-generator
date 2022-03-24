@@ -1,0 +1,33 @@
+header {
+  color: white;
+  background-color: rgb(90, 19, 90);
+  padding: 10px;
+  margin: 20px;
+  font-size: 2em;
+  display: flex;
+  text-align: center;
+}
+
+div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px;
+}
+.card {
+  padding: 10px;
+  margin: 25px;
+}
+
+.card-header {
+  color: rgb(124, 71, 124);
+  font-size: 30px;
+}
+
+.list-group {
+  color: rgb(22, 26, 11);
+}
+
+#email {
+  color: rgba(15, 15, 163, 0.584);
+}
